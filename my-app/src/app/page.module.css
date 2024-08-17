@@ -1,0 +1,37 @@
+.main {
+  background-color: #615566;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  margin: 0 auto;
+  justify-content: center;
+  align-items: center;
+}
+
+.containerBall {
+  background-color: gray;
+  width: 500px;
+  height: 200px;
+  border-radius: 120px;
+  position: relative;
+}
+
+.ball1 {
+  position: absolute;
+  background-color: white;
+  width: 180px;
+  height: 180px;
+  border-radius: 100%;
+  left: 20px;
+  top: 10px;
+}
+
+.ball2 {
+  position: absolute;
+  background-color: white;
+  width: 180px;
+  height: 180px;
+  border-radius: 100%;
+  right: 20px;
+  top: 10px;
+}
