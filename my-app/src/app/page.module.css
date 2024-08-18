@@ -1,3 +1,4 @@
+
 .main {
   background-color: #615566;
   width: 100vw;
@@ -6,32 +7,59 @@
   margin: 0 auto;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+  gap: 60px;
 }
 
-.containerBall {
+.containerBallRigth {
+  background-color: green;
+  width: 500px;
+  height: 200px;
+  border-radius: 120px;
+  position: relative;
+  transition: 0.9s ease;
+}
+
+.containerBallLeft {
   background-color: gray;
   width: 500px;
   height: 200px;
   border-radius: 120px;
   position: relative;
+  transition: 0.9s ease;
 }
 
-.ball1 {
+.ballRight {
   position: absolute;
   background-color: white;
   width: 180px;
   height: 180px;
   border-radius: 100%;
-  left: 20px;
   top: 10px;
+  cursor: pointer;
+  transition: transform 0.9s ease;
 }
 
-.ball2 {
+.ballLeft {
   position: absolute;
   background-color: white;
   width: 180px;
   height: 180px;
   border-radius: 100%;
-  right: 20px;
   top: 10px;
+  cursor: pointer;
+  transition: transform 0.9s ease;
+}
+
+.ballRight {
+  transform: translateX(300px);
+}
+
+.ballLeft {
+  transform: translateX(20px); 
+}
+
+.title {
+  color: #c1c9c8;
+  font-size: 40px;
 }
