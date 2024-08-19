@@ -1,49 +1,45 @@
 const express = require('express');
-const app = express();
-const port = 3000;
+const { Sequelize } = require('./models');
+const { DataTypes } = require('sequelize');
 
-let items = [];
-let currentId = 1;
+const cors = require('cors')
+const app = express();
+const port = 2999;
+
+app.use(cors())
 
 app.use(express.json());
 
-app.get('/boolean', (req, res) => {
-    res.json(items)
+const sequelize = new Sequelize('esp32', 'postgres', '321987', {
+    host: '127.0.0.1',
+    dialect: 'postgres'
 });
 
-app.post('/boolean', (req, res) => {
-    const newItem = {
-        id: currentId++,
-        name: req.body.name
-    };
-    items.push(newItem);
-    res.status(201).json(newItem)
-})
-
-app.get('/boolean/:id', (req, res) => {
-    const id = parseInt(req.params.id)
-    const item = items.find(i => i.id === id);
-    if (item) {
-        res.json(item)
-    } else {
-        res.status(404).json({message: 'Item não encontrado'});
-    }
-});
-
-app.delete('/boolean/:id', (req, res) => {
-    const id = parseInt(req.params.id)
-    const index = items.findIndex(i => i.id === id);
-    if (index !== -1) {
-        items.splice(index, 1);
-        res.status(204).send()
-
-    } else {
-        res.status(404).json({message: 'Item não encontrado'})
+const Comunication = sequelize.define('ComunicatonValues', {
+    comunicationValues: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false
     }
 })
 
+sequelize.sync();
+
+app.get('/', (req, res) => {
+    res.send('API está funcionando!');
+});
+
+app.get('/values', async (req, res) => {
+    const values = await Comunication.findAll();
+    res.json(values);
+});
+
+app.post('/values', async (req, res) => {
+    const newItem = await Comunication.create({
+        comunicationValues: req.body.comunicationValues
+    });
+    res.status(201).json(newItem);
+})
 
 app.listen(port, () => {
-    console.log(`Servidor rodando em http://localhost:${port}`);
-});
-
+    console.log(`Servidor rodando em http://localhost:${port}`)
+})
