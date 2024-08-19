@@ -5,7 +5,7 @@ import axios from 'axios'
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const apiUrl = "http://127.0.0.1:2999/values"
+  const apiUrl = "https://api--esp32.vercel.app/values"
   const [dados, setDados] = useState()
   const [on, setOn] = useState();
   
