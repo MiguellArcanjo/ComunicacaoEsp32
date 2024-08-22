@@ -5,13 +5,13 @@ import axios from 'axios';
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const apiUrl = "http://localhost:2999/values";
+  const apiUrl = "https://api--esp32.vercel.app/values";
   const [dados, setDados] = useState();
   const [on, setOn] = useState();
 
   useEffect(() => {
-    // Conectar ao WebSocket
-    const ws = new WebSocket('ws://localhost:2999');
+
+    const ws = new WebSocket('ws://api--esp32.vercel.app/');
 
     ws.onopen = () => {
       console.log('Conectado ao WebSocket');
@@ -31,7 +31,6 @@ export default function Home() {
       console.error('Erro no WebSocket:', error);
     };
 
-    // Buscar o valor inicial
     axios.get(apiUrl)
       .then(response => {
         const lastItem = response.data[response.data.length - 1];
@@ -41,8 +40,7 @@ export default function Home() {
         }
       })
       .catch((error) => console.error("Não foi possível retornar o valor"));
-
-    // Limpar a conexão WebSocket quando o componente for desmontado
+    
     return () => {
       ws.close();
     };
