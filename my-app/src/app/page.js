@@ -10,7 +10,7 @@ export default function Home() {
   const [on, setOn] = useState();
 
   useEffect(() => {
-    const ws = new WebSocket('wss//apiesp32websocket.onrender.com');
+    const ws = new WebSocket('wss://apiesp32websocket.onrender.com');
 
     ws.onopen = () => {
       console.log('Conectado ao WebSocket');
