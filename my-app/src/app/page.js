@@ -11,7 +11,7 @@ export default function Home() {
 
   useEffect(() => {
 
-    const ws = new WebSocket('wss://api--esp32.vercel.app');
+    const ws = new WebSocket('wss://api--esp32.vercel.app/');
 
     ws.onopen = () => {
       console.log('Conectado ao WebSocket');
