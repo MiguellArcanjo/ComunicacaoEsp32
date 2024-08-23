@@ -5,22 +5,34 @@ import axios from 'axios';
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const apiUrl = "https://api--esp32.vercel.app/values";
+  const apiUrl = "http://localhost:3333/values";
   const [dados, setDados] = useState();
   const [on, setOn] = useState();
 
   useEffect(() => {
-
-    const ws = new WebSocket('wss://api--esp32.vercel.app/');
+    const ws = new WebSocket('ws://localhost:3333');
 
     ws.onopen = () => {
       console.log('Conectado ao WebSocket');
     };
 
     ws.onmessage = (event) => {
-      const newValue = JSON.parse(event.data);
-      setDados(newValue);
-      setOn(newValue.comunicationValues);
+      try {
+        const newValue = JSON.parse(event.data);
+        console.log('Dados recebidos do WebSocket:', newValue);
+        
+        if (newValue.values && newValue.values.length > 0) {
+          const lastValue = newValue.values[newValue.values.length - 1];
+          console.log('Último valor do array:', lastValue);
+          
+          setDados(lastValue);
+          setOn(lastValue.comunicationValue);
+        } else {
+          console.warn('O array "values" está vazio ou não existe');
+        }
+      } catch (error) {
+        console.error('Erro ao processar a mensagem WebSocket:', error);
+      }
     };
 
     ws.onclose = () => {
@@ -31,22 +43,35 @@ export default function Home() {
       console.error('Erro no WebSocket:', error);
     };
 
-    axios.get(apiUrl)
-      .then(response => {
-        const lastItem = response.data[response.data.length - 1];
-        if (lastItem) {
-          setDados(lastItem);
-          setOn(lastItem.comunicationValues);
+    const fetchInitialData = async () => {
+      try {
+        const response = await axios.get(apiUrl);
+        console.log('Dados recebidos do Axios:', response.data);
+
+        if (response.data.values && response.data.values.length > 0) {
+          const lastValue = response.data.values[response.data.values.length - 1];
+          console.log('Último valor do array:', lastValue);
+
+          if (lastValue) {
+            setDados(lastValue);
+            setOn(lastValue.comunicationValue);
+          }
+        } else {
+          console.warn('O array "values" está vazio ou não existe na resposta da API');
         }
-      })
-      .catch((error) => console.error("Não foi possível retornar o valor"));
-    
+      } catch (error) {
+        console.error("Não foi possível retornar o valor", error);
+      }
+    };
+
+    fetchInitialData();
+
     return () => {
       ws.close();
     };
   }, []);
 
-  console.log(on);
+  console.log('Estado atual de "on":', on);
 
   return (
     <main className={styles.main}>
