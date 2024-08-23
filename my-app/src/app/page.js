@@ -5,12 +5,12 @@ import axios from 'axios';
 import { useEffect, useState } from "react";
 
 export default function Home() {
-  const apiUrl = "http://localhost:3333/values";
+  const apiUrl = "https://apiesp32websocket.onrender.com/values";
   const [dados, setDados] = useState();
   const [on, setOn] = useState();
 
   useEffect(() => {
-    const ws = new WebSocket('ws://localhost:3333');
+    const ws = new WebSocket('wss//apiesp32websocket.onrender.com');
 
     ws.onopen = () => {
       console.log('Conectado ao WebSocket');
